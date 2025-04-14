@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.MachineAddController"
+            fitToWidth="true"
+            prefWidth="560" prefHeight="680"
+            style="-fx-background: linear-gradient(to bottom, #f7fff0, #e1f3cc);">
+
+    <VBox alignment="TOP_CENTER" spacing="18"
+          prefWidth="520"
+          style="-fx-padding: 30;
+                 -fx-background-color: #ffffff;
+                 -fx-background-radius: 12;
+                 -fx-effect: dropshadow(gaussian, rgba(160,200,120,0.25), 10, 0.2, 0, 3);
+                 -fx-font-family: 'Segoe UI';
+                 -fx-font-size: 13px;">
+
+        <Label text="🌿 Ajouter une Machine Agricole"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2e5e1a;" />
+
+        <!-- Champ: Nom -->
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="📝 Nom:" style="-fx-text-fill: #4b6d2c; -fx-font-weight: bold; -fx-pref-width: 160;" />
+            <TextField fx:id="nameField" promptText="Tracteur Massey"
+                       style="-fx-pref-width: 300; -fx-background-radius: 8; -fx-border-color: #a5d48a;" />
+        </HBox>
+
+        <!-- Champ: Type -->
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="🔧 Type:" style="-fx-text-fill: #4b6d2c; -fx-font-weight: bold; -fx-pref-width: 160;" />
+            <ComboBox fx:id="typeComboBox" promptText="Tracteur, Moissonneuse..."
+                      style="-fx-pref-width: 300; -fx-background-radius: 8; -fx-border-color: #a5d48a;" />
+        </HBox>
+
+        <!-- Champ: État -->
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="📦 État:" style="-fx-text-fill: #4b6d2c; -fx-font-weight: bold; -fx-pref-width: 160;" />
+            <ComboBox fx:id="etatComboBox" promptText="Disponible / Louée / Maintenance"
+                      style="-fx-pref-width: 300; -fx-background-radius: 8; -fx-border-color: #a5d48a;" />
+        </HBox>
+
+        <!-- Champ: Date -->
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="📅 Dernier entretien:" style="-fx-text-fill: #4b6d2c; -fx-font-weight: bold; -fx-pref-width: 160;" />
+            <DatePicker fx:id="datePicker"
+                        style="-fx-pref-width: 300; -fx-background-radius: 8; -fx-border-color: #a5d48a;" />
+        </HBox>
+
+        <!-- Champ: Prix -->
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="💰 Prix / jour:" style="-fx-text-fill: #4b6d2c; -fx-font-weight: bold; -fx-pref-width: 160;" />
+            <TextField fx:id="priceField" promptText="ex: 120"
+                       style="-fx-pref-width: 300; -fx-background-radius: 8; -fx-border-color: #a5d48a;" />
+        </HBox>
+
+        <!-- Champ: Marque -->
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="🏷️ Marque:" style="-fx-text-fill: #4b6d2c; -fx-font-weight: bold; -fx-pref-width: 160;" />
+            <ComboBox fx:id="brandComboBox" promptText="Sélectionner une marque"
+                      style="-fx-pref-width: 300; -fx-background-radius: 8; -fx-border-color: #a5d48a;" />
+        </HBox>
+
+        <!-- Upload Image -->
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="📷 Image:" style="-fx-text-fill: #4b6d2c; -fx-font-weight: bold; -fx-pref-width: 160;" />
+            <Button fx:id="uploadButton" text="Choisir une image" onAction="#handleImageUpload"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white;
+                           -fx-background-radius: 6; -fx-cursor: hand;" />
+        </HBox>
+
+        <Label fx:id="imageLabel" text="Aucune image sélectionnée"
+               style="-fx-text-fill: #7f8c8d;" />
+
+        <!-- Aperçu de l'image -->
+        <ImageView fx:id="imagePreview" fitHeight="180" fitWidth="250" preserveRatio="true"
+                   style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.3, 0, 2);" />
+
+        <!-- Bouton Ajouter -->
+        <Button fx:id="addButton" text="✅ Ajouter"
+                onAction="#handleAddMachine"
+                style="-fx-background-color: #27ae60;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;
+                       -fx-font-size: 14px;
+                       -fx-padding: 10 24;
+                       -fx-background-radius: 8;
+                       -fx-cursor: hand;" />
+
+    </VBox>
+</ScrollPane>

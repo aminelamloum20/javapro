@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.MachineIndexController"
+            fitToWidth="true"
+            prefWidth="800" prefHeight="600"
+            style="-fx-background: linear-gradient(to bottom, #f7fff0, #d2f7c4);">
+
+    <FlowPane fx:id="machineContainer"
+              hgap="25" vgap="25"
+              prefWrapLength="740"
+              style="-fx-background-color: transparent;
+                     -fx-padding: 20;
+                     -fx-border-insets: 10;
+                     -fx-font-family: 'Segoe UI';
+                     -fx-font-size: 13px;">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+    </FlowPane>
+</ScrollPane>
+

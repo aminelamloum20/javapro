@@ -5,39 +5,54 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnection {
+
     private static final String URL = "jdbc:mysql://localhost:3306/devharvest";
     private static final String USER = "root";
     private static final String PASSWORD = "";
 
-    private static Connection connection;
+    private static DbConnection instance;     // Singleton instance
+    private Connection connection;            // Unique JDBC connection
 
+    // Constructeur privé
     private DbConnection() {
-        // private constructor to prevent instantiation
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver"); // pour MySQL 8+
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("✅ Connexion à MySQL établie.");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println("❌ Erreur de connexion à la base de données :");
+            e.printStackTrace();
+        }
     }
 
-    public static Connection getConnection() {
-        if (connection == null) {
-            try {
-                connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                System.out.println("✅ Connected to MySQL!");
-            } catch (SQLException e) {
-                System.err.println("❌ Failed to connect to database:");
-                e.printStackTrace();
-            }
+    // Accès à l’instance singleton
+    public static DbConnection getInstance() {
+        if (instance == null) {
+            instance = new DbConnection();
         }
+        return instance;
+    }
+
+    // Récupérer la connexion
+    public Connection getConn() {
         return connection;
     }
 
-    public static void closeConnection() {
-        if (connection != null) {
-            try {
-                connection.close();
-                System.out.println("🔌 Disconnected from MySQL.");
-            } catch (SQLException e) {
-                System.err.println("❌ Failed to close connection:");
-                e.printStackTrace();
-            }
-        }
+    // Accès direct simplifié (alternative statique)
+    public static Connection getConnection() {
+        return getInstance().getConn();
     }
 
+    // Fermer proprement la connexion
+    public static void closeConnection() {
+        try {
+            if (getInstance().connection != null && !getInstance().connection.isClosed()) {
+                getInstance().connection.close();
+                System.out.println("🔌 Déconnexion MySQL effectuée.");
+            }
+        } catch (SQLException e) {
+            System.err.println("❌ Erreur lors de la fermeture de la connexion :");
+            e.printStackTrace();
+        }
+    }
 }
