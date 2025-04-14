@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.MachineAddController"
+            fitToWidth="true"
+            prefWidth="500" prefHeight="650"
+            style="-fx-background: #ecf0f1;">
+
+    <VBox alignment="TOP_CENTER" spacing="15"
+          prefWidth="480"
+          style="-fx-padding: 20;
+                 -fx-background-color: #ffffff;
+                 -fx-border-radius: 10;
+                 -fx-background-radius: 10;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.2, 0, 4);
+                 -fx-font-family: 'Segoe UI';
+                 -fx-font-size: 13px;">
+
+        <Label text="Ajouter une Machine"
+               style="-fx-font-size: 20px;
+                      -fx-font-weight: bold;
+                      -fx-text-fill: #2c3e50;" />
+
+        <Label text="Nom de la machine:" style="-fx-text-fill: #34495e;" />
+        <TextField fx:id="nameField" promptText="ex: Tracteur Massey"
+                   style="-fx-background-radius: 6; -fx-border-color: #bdc3c7;" />
+
+        <Label text="Type de machine:" style="-fx-text-fill: #34495e;" />
+        <ComboBox fx:id="typeComboBox" promptText="ex: Tracteur, Moissonneuse"
+                  style="-fx-background-radius: 6; -fx-border-color: #bdc3c7;" />
+
+        <Label text="État de la machine:" style="-fx-text-fill: #34495e;" />
+        <ComboBox fx:id="etatComboBox" promptText="Disponible / Louée / En maintenance"
+                  style="-fx-background-radius: 6; -fx-border-color: #bdc3c7;" />
+
+        <Label text="Date du dernier entretien:" style="-fx-text-fill: #34495e;" />
+        <DatePicker fx:id="datePicker"
+                    style="-fx-background-radius: 6; -fx-border-color: #bdc3c7;" />
+
+        <Label text="Prix par jour (DT):" style="-fx-text-fill: #34495e;" />
+        <TextField fx:id="priceField" promptText="ex: 120"
+                   style="-fx-background-radius: 6; -fx-border-color: #bdc3c7;" />
+
+        <Label text="Marque:" style="-fx-text-fill: #34495e;" />
+        <ComboBox fx:id="brandComboBox" promptText="Choisir une marque"
+                  style="-fx-background-radius: 6; -fx-border-color: #bdc3c7;" />
+
+        <Label text="Image:" style="-fx-text-fill: #34495e;" />
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button fx:id="uploadButton" text="Choisir une image" onAction="#handleImageUpload"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white;
+                           -fx-background-radius: 6;
+                           -fx-cursor: hand;" />
+            <Label fx:id="imageLabel" text="Aucune image sélectionnée"
+                   style="-fx-text-fill: #7f8c8d;" />
+        </HBox>
+
+        <ImageView fx:id="imagePreview" fitHeight="200" fitWidth="200" preserveRatio="true"
+                   style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.3, 0, 2);" />
+
+        <Button fx:id="addButton" text="Ajouter" onAction="#handleAddMachine"
+                style="-fx-background-color: #27ae60;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;
+                       -fx-font-size: 14px;
+                       -fx-background-radius: 6;
+                       -fx-cursor: hand;" />
+    </VBox>
+</ScrollPane>

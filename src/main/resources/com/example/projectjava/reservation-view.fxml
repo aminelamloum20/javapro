@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.ReservationViewController"
+            prefHeight="500.0" prefWidth="800.0"
+            style="-fx-background-color: #f4f4f4;">
+
+    <HBox spacing="40" alignment="CENTER"
+          AnchorPane.topAnchor="50" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="50">
+
+        <!-- Reservation Form -->
+        <VBox spacing="12" alignment="TOP_CENTER"
+              style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.1, 0, 2);"
+              maxWidth="300">
+
+            <Label text="Réserver une Machine"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+            <Label text="Machine disponible :" />
+            <ComboBox fx:id="machineComboBox"
+                      promptText="Sélectionner une machine"
+                      style="-fx-pref-width: 250;" />
+
+            <Label text="Date de début :" />
+            <DatePicker fx:id="startDatePicker" style="-fx-pref-width: 250;" />
+
+            <Label text="Date de fin :" />
+            <DatePicker fx:id="endDatePicker" style="-fx-pref-width: 250;" />
+
+            <Button text="Réserver"
+                    fx:id="reserveButton"
+                    onAction="#handleReserve"
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;
+                           -fx-padding: 8 20; -fx-background-radius: 6;" />
+
+            <Label fx:id="messageLabel"
+                   text=""
+                   style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;" />
+        </VBox>
+
+        <!-- Machine Card -->
+        <VBox fx:id="machineCard" spacing="10" alignment="CENTER"
+              style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 4, 0.1, 0, 2);"
+              maxWidth="300" visible="false">
+
+            <ImageView fx:id="machineImage"
+                       fitWidth="180" fitHeight="120"
+                       preserveRatio="true" />
+
+            <Label fx:id="machineName"
+                   style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+            <Label fx:id="machineType" />
+            <Label fx:id="machineEtat" />
+            <Label fx:id="machinePrix" style="-fx-text-fill: #27ae60;" />
+        </VBox>
+
+    </HBox>
+</AnchorPane>
