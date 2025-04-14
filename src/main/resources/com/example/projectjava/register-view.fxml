@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="600" prefWidth="800" style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RegisterViewController">
+
+    <VBox alignment="CENTER" layoutX="150" layoutY="50" prefWidth="300" spacing="15">
+        <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #333;" text="User Registration" />
+
+        <TextField fx:id="emailField" promptText="Email" style="-fx-pref-width: 250; -fx-padding: 8;" />
+
+        <PasswordField fx:id="passwordField" promptText="Password" style="-fx-pref-width: 250; -fx-padding: 8;" />
+
+        <ComboBox fx:id="roleComboBox" promptText="Select Role" style="-fx-pref-width: 250;" />
+
+        <Button onAction="#handleRegister" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 250;" text="Register" />
+
+        <Label fx:id="statusLabel" style="-fx-font-size: 12px;" textFill="red" />
+        <Label fx:id="loginLabel"
+               text="Login"
+               onMouseClicked="#handleGoToLogin"
+               style="-fx-text-fill: #2196F3; -fx-underline: true; -fx-cursor: hand;" />
+    </VBox>
+</VBox>
