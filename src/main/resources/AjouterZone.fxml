@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controlles.AjouterZone">
+   <children>
+      <Label layoutX="58.0" layoutY="99.0" text="superficie de la zone" />
+      <Label layoutX="58.0" layoutY="163.0" text="nom de la zone" />
+      <Label layoutX="54.0" layoutY="229.0" text="localisation de la zone" />
+      <TextField fx:id="superficieTextField" layoutX="56.0" layoutY="116.0" />
+      <TextField fx:id="nomzoneTextField" layoutX="56.0" layoutY="180.0" />
+      <TextField fx:id="localisationTextField" layoutX="56.0" layoutY="246.0" />
+      <Button layoutX="257.0" layoutY="339.0" mnemonicParsing="false" onAction="#AjouterZone" text="Ajouter Zone" />
+      <Text fill="#f50905" layoutX="194.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Créer une zone">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

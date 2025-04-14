@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controlles.ListeZones"
+            prefHeight="450.0" prefWidth="650.0"
+            style="-fx-background-color: #f0f4f8;">
+
+    <children>
+        <Label text="📋 Liste des Zones" layoutX="20" layoutY="10"
+               style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+
+        <TableView fx:id="tableZones"
+                   layoutX="20" layoutY="50"
+                   prefWidth="610.0" prefHeight="320.0"
+                   fixedCellSize="40.0"
+                   style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 5;">
+            <columns>
+                <TableColumn fx:id="colSuperficie" text="Superficie" prefWidth="120"/>
+                <TableColumn fx:id="colNom" text="Nom" prefWidth="180"/>
+                <TableColumn fx:id="colLocalisation" text="Localisation" prefWidth="180"/>
+                <TableColumn fx:id="colActions" text="Actions" prefWidth="130"/>
+            </columns>
+        </TableView>
+
+        <!-- Bouton Retour -->
+        <Button fx:id="btnRetour" text="↩ Retour à l'accueil" layoutX="20" layoutY="390"
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10;"
+                onAction="#retourAccueil"/>
+
+        <!-- Bouton Ajouter -->
+        <Button fx:id="btnAjouter" text="➕ Ajouter une Zone" layoutX="470" layoutY="390"
+                style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10;"
+                onAction="#ajouterZone"/>
+    </children>
+</AnchorPane>
