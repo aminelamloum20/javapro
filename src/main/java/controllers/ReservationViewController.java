@@ -21,6 +21,8 @@ import services.UserService;
 import java.io.File;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class ReservationViewController {
@@ -28,6 +30,10 @@ public class ReservationViewController {
     @FXML private ComboBox<Machine> machineComboBox;
     @FXML private DatePicker startDatePicker;
     @FXML private DatePicker endDatePicker;
+    @FXML private Spinner<Integer> startHourSpinner;
+    @FXML private Spinner<Integer> startMinuteSpinner;
+    @FXML private Spinner<Integer> endHourSpinner;
+    @FXML private Spinner<Integer> endMinuteSpinner;
     @FXML private Label messageLabel;
 
     @FXML private VBox machineCard;
@@ -68,6 +74,11 @@ public class ReservationViewController {
                 disableReservedDates(selected.getId());
             }
         });
+
+        startHourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 8));
+        startMinuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
+        endHourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 17));
+        endMinuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
 
         machineCard.setVisible(false);
     }
@@ -158,8 +169,11 @@ public class ReservationViewController {
             return;
         }
 
-        Timestamp startTimestamp = Timestamp.valueOf(start.atStartOfDay());
-        Timestamp endTimestamp = Timestamp.valueOf(end.atStartOfDay());
+        LocalDateTime startDateTime = LocalDateTime.of(start, LocalTime.of(startHourSpinner.getValue(), startMinuteSpinner.getValue()));
+        LocalDateTime endDateTime = LocalDateTime.of(end, LocalTime.of(endHourSpinner.getValue(), endMinuteSpinner.getValue()));
+
+        Timestamp startTimestamp = Timestamp.valueOf(startDateTime);
+        Timestamp endTimestamp = Timestamp.valueOf(endDateTime);
 
         boolean available = serviceReservation.isReservationAvailable(selectedMachine.getId(), startTimestamp, endTimestamp);
 
