@@ -2,19 +2,21 @@ package controllers;
 
 import entities.Machine;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import services.ServiceMachine;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class MachineIndexController {
@@ -102,8 +104,23 @@ public class MachineIndexController {
     }
 
     private void handleEdit(Machine machine) {
-        System.out.println("📝 Edit machine: " + machine.getId());
-        // TODO: Navigate to edit form or prefill machine-add.fxml
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pijihene/machine-edit.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 600);
+
+            // Inject machine data
+            MachineEditController controller = loader.getController();
+            controller.setMachine(machine);
+
+            // Change current scene (not a new window)
+            Stage currentStage = (Stage) machineContainer.getScene().getWindow();
+            currentStage.setScene(scene);
+            currentStage.setTitle("✏️ Modifier la Machine");
+            currentStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void handleDelete(Machine machine) {
@@ -127,5 +144,20 @@ public class MachineIndexController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    // ✅ Nouveau : handleBack()
+    @FXML
+    private void handleBack(javafx.event.ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pijihene/machine-home.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("🌾 Gestion des Machines");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -2,10 +2,11 @@ package controllers;
 
 import entities.Machine;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,10 +16,8 @@ import services.ServiceMachine;
 
 import java.io.*;
 import java.sql.Timestamp;
-import java.io.IOException;
-import javafx.event.ActionEvent;
 
-public class MachineAddController {
+public class MachineEditController {
 
     @FXML private TextField nameField;
     @FXML private ComboBox<String> typeComboBox;
@@ -26,26 +25,38 @@ public class MachineAddController {
     @FXML private DatePicker datePicker;
     @FXML private TextField priceField;
     @FXML private ComboBox<String> brandComboBox;
-    @FXML private Label imageLabel;
-    @FXML private Button uploadButton;
     @FXML private ImageView imagePreview;
+    @FXML private Label imageLabel;
 
-    private String relativeImagePath;
     private final ServiceMachine serviceMachine = new ServiceMachine();
+    private String relativeImagePath;
+    private Machine machine;
+
+    public void setMachine(Machine machine) {
+        this.machine = machine;
+        populateFields(machine);
+    }
 
     @FXML
     public void initialize() {
-        etatComboBox.setItems(FXCollections.observableArrayList(
-                "Disponible", "En maintenance", "Louée"
-        ));
+        typeComboBox.setItems(FXCollections.observableArrayList("Tracteur", "Moissonneuse", "Semoir"));
+        etatComboBox.setItems(FXCollections.observableArrayList("Disponible", "En maintenance", "Louée"));
+        brandComboBox.setItems(FXCollections.observableArrayList("Massey Ferguson", "John Deere", "Claas"));
+    }
 
-        typeComboBox.setItems(FXCollections.observableArrayList(
-                "Tracteur", "Moissonneuse", "Semoir"
-        ));
+    private void populateFields(Machine machine) {
+        nameField.setText(machine.getName());
+        typeComboBox.setValue(machine.getType());
+        etatComboBox.setValue(machine.getEtat());
+        datePicker.setValue(machine.getDateLastCheckup().toLocalDateTime().toLocalDate());
+        priceField.setText(String.valueOf(machine.getPricePerDay()));
+        brandComboBox.setValue(machine.getBrand());
+        relativeImagePath = machine.getImage_url();
 
-        brandComboBox.setItems(FXCollections.observableArrayList(
-                "Massey Ferguson", "John Deere", "Claas"
-        ));
+        if (relativeImagePath != null && new File(relativeImagePath).exists()) {
+            imagePreview.setImage(new Image(new File(relativeImagePath).toURI().toString()));
+            imageLabel.setText(new File(relativeImagePath).getName());
+        }
     }
 
     @FXML
@@ -86,7 +97,9 @@ public class MachineAddController {
     }
 
     @FXML
-    private void handleAddMachine() {
+    private void handleAddMachine(ActionEvent event) {
+        if (machine == null) return;
+
         if (nameField.getText().isEmpty() ||
                 typeComboBox.getValue() == null ||
                 etatComboBox.getValue() == null ||
@@ -94,7 +107,7 @@ public class MachineAddController {
                 priceField.getText().isEmpty() ||
                 brandComboBox.getValue() == null) {
 
-            showAlert("Veuillez remplir tous les champs obligatoires.");
+            showAlert("❌ Veuillez remplir tous les champs obligatoires.");
             return;
         }
 
@@ -103,23 +116,33 @@ public class MachineAddController {
             price = Integer.parseInt(priceField.getText());
             if (price < 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
-            showAlert("Le prix doit être un nombre entier positif.");
+            showAlert("❌ Le prix doit être un entier positif.");
             return;
         }
 
-        Machine machine = new Machine(
-                nameField.getText(),
-                typeComboBox.getValue(),
-                etatComboBox.getValue(),
-                Timestamp.valueOf(datePicker.getValue().atStartOfDay()),
-                price,
-                brandComboBox.getValue(),
-                relativeImagePath
-        );
+        machine.setName(nameField.getText());
+        machine.setType(typeComboBox.getValue());
+        machine.setEtat(etatComboBox.getValue());
+        machine.setDateLastCheckup(Timestamp.valueOf(datePicker.getValue().atStartOfDay()));
+        machine.setPricePerDay(price);
+        machine.setBrand(brandComboBox.getValue());
+        machine.setImage_url(relativeImagePath);
 
-        serviceMachine.addMachine(machine);
-        showAlert("✅ Machine ajoutée avec succès !");
-        clearForm();
+        serviceMachine.editMachine(machine);
+
+        showAlert("✅ Machine modifiée avec succès !");
+
+        // Go back to machine index
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pijihene/machine-index.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("🌿 Liste des Machines");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showAlert(String message) {
@@ -128,18 +151,6 @@ public class MachineAddController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    private void clearForm() {
-        nameField.clear();
-        typeComboBox.getSelectionModel().clearSelection();
-        etatComboBox.getSelectionModel().clearSelection();
-        datePicker.setValue(null);
-        priceField.clear();
-        brandComboBox.getSelectionModel().clearSelection();
-        imageLabel.setText("Aucune image sélectionnée");
-        imagePreview.setImage(null);
-        relativeImagePath = null;
     }
 
     @FXML
