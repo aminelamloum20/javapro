@@ -20,9 +20,11 @@
             style="-fx-font-size: 16px; -fx-pref-width: 300; -fx-background-color: #3498db; -fx-text-fill: white;" />
 
     <Button text="📅 Manage Reservations"
+            onAction="#handleManageReservations"
             style="-fx-font-size: 16px; -fx-pref-width: 300; -fx-background-color: #27ae60; -fx-text-fill: white;" />
 
     <Button text="🚜 Manage Machines"
+            onAction="#handleManageMachines"
             style="-fx-font-size: 16px; -fx-pref-width: 300; -fx-background-color: #e67e22; -fx-text-fill: white;" />
 
     <Button text="📊 View Reports"

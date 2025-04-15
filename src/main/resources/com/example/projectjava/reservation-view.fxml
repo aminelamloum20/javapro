@@ -8,60 +8,70 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.ReservationViewController"
-            prefHeight="500.0" prefWidth="800.0"
-            style="-fx-background-color: #f4f4f4;">
+            prefHeight="520.0" prefWidth="860.0"
+            style="-fx-background-color: linear-gradient(to bottom, #eef9e6, #d2f0c0);">
 
-    <HBox spacing="40" alignment="CENTER"
-          AnchorPane.topAnchor="50" AnchorPane.leftAnchor="0"
-          AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="50">
+    <VBox spacing="20" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
 
-        <!-- Reservation Form -->
-        <VBox spacing="12" alignment="TOP_CENTER"
-              style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;
-                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.1, 0, 2);"
-              maxWidth="300">
+        <!-- 🔙 Bouton retour -->
+        <Button text="🔙 Retour à l'accueil"
+                onAction="#handleBack"
+                style="-fx-background-color: #7f8c8d;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;
+                       -fx-padding: 6 20;
+                       -fx-background-radius: 8;
+                       -fx-font-size: 13px;" />
 
-            <Label text="Réserver une Machine"
-                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+        <HBox spacing="50" alignment="CENTER"
+              AnchorPane.bottomAnchor="40">
 
-            <Label text="Machine disponible :" />
-            <ComboBox fx:id="machineComboBox"
-                      promptText="Sélectionner une machine"
-                      style="-fx-pref-width: 250;" />
+            <!-- Formulaire de réservation -->
+            <VBox spacing="14" alignment="TOP_CENTER"
+                  style="-fx-background-color: #ffffff; -fx-padding: 25;
+                         -fx-background-radius: 12;
+                         -fx-effect: dropshadow(gaussian, rgba(160,200,110,0.25), 10, 0.1, 0, 4);"
+                  maxWidth="320">
 
-            <Label text="Date de début :" />
-            <DatePicker fx:id="startDatePicker" style="-fx-pref-width: 250;" />
+                <Label text="🌾 Réserver une Machine"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2e5e1a;" />
 
-            <Label text="Date de fin :" />
-            <DatePicker fx:id="endDatePicker" style="-fx-pref-width: 250;" />
+                <Label text="🚜 Machine disponible :" style="-fx-font-weight: bold; -fx-text-fill: #4b6d2c;" />
+                <ComboBox fx:id="machineComboBox" promptText="Choisir une machine"
+                          style="-fx-pref-width: 260; -fx-background-radius: 6;" />
 
-            <Button text="Réserver"
-                    fx:id="reserveButton"
-                    onAction="#handleReserve"
-                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;
-                           -fx-padding: 8 20; -fx-background-radius: 6;" />
+                <Label text="📅 Date de début :" style="-fx-font-weight: bold; -fx-text-fill: #4b6d2c;" />
+                <DatePicker fx:id="startDatePicker" style="-fx-pref-width: 260; -fx-background-radius: 6;" />
 
-            <Label fx:id="messageLabel"
-                   text=""
-                   style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;" />
-        </VBox>
+                <Label text="📆 Date de fin :" style="-fx-font-weight: bold; -fx-text-fill: #4b6d2c;" />
+                <DatePicker fx:id="endDatePicker" style="-fx-pref-width: 260; -fx-background-radius: 6;" />
 
-        <!-- Machine Card -->
-        <VBox fx:id="machineCard" spacing="10" alignment="CENTER"
-              style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;
-                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 4, 0.1, 0, 2);"
-              maxWidth="300" visible="false">
+                <Button text="🌱 Réserver" fx:id="reserveButton" onAction="#handleReserve"
+                        style="-fx-background-color: #6bbf59; -fx-text-fill: white;
+                               -fx-font-weight: bold; -fx-font-size: 14px;
+                               -fx-padding: 10 24; -fx-background-radius: 8;" />
 
-            <ImageView fx:id="machineImage"
-                       fitWidth="180" fitHeight="120"
-                       preserveRatio="true" />
+                <Label fx:id="messageLabel" text="" wrapText="true"
+                       style="-fx-text-fill: #c0392b; -fx-font-weight: bold; -fx-font-size: 12px;" />
+            </VBox>
 
-            <Label fx:id="machineName"
-                   style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
-            <Label fx:id="machineType" />
-            <Label fx:id="machineEtat" />
-            <Label fx:id="machinePrix" style="-fx-text-fill: #27ae60;" />
-        </VBox>
+            <!-- Carte machine -->
+            <VBox fx:id="machineCard" spacing="12" alignment="CENTER"
+                  style="-fx-background-color: #f6fff0; -fx-padding: 20;
+                         -fx-background-radius: 12;
+                         -fx-effect: dropshadow(gaussian, rgba(150,200,100,0.2), 8, 0.1, 0, 3);"
+                  maxWidth="320" visible="false">
 
-    </HBox>
+                <ImageView fx:id="machineImage" fitWidth="200" fitHeight="130" preserveRatio="true"
+                           style="-fx-effect: dropshadow(gaussian, #cce5b0, 4, 0.1, 0, 2);" />
+
+                <Label fx:id="machineName"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2e5e1a;" />
+                <Label fx:id="machineType" style="-fx-text-fill: #4b6d2c;" />
+                <Label fx:id="machineEtat" style="-fx-text-fill: #6e8e3e;" />
+                <Label fx:id="machinePrix" style="-fx-text-fill: #28a745; -fx-font-weight: bold;" />
+            </VBox>
+
+        </HBox>
+    </VBox>
 </AnchorPane>

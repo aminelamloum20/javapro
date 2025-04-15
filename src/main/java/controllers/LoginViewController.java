@@ -60,7 +60,7 @@ public class LoginViewController {
             if (role.equals("ADMIN") || role.equals("ROLE_ADMIN")) {
                 fxmlPath = "/com/example/projectjava/admin-dashboard-view.fxml";
             } else {
-                fxmlPath = "/com/example/projectjava/hello-view.fxml";
+                fxmlPath = "/com/example/projectjava/machine-home.fxml";
             }
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

@@ -4,16 +4,19 @@ import entities.Machine;
 import entities.Reservation;
 import entities.User;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import services.ServiceMachine;
 import services.ServiceReservation;
+import services.Session;
 import services.UserService;
 
 import java.io.File;
@@ -28,7 +31,6 @@ public class ReservationViewController {
     @FXML private DatePicker endDatePicker;
     @FXML private Label messageLabel;
 
-    // Machine card section
     @FXML private VBox machineCard;
     @FXML private ImageView machineImage;
     @FXML private Label machineName;
@@ -45,7 +47,6 @@ public class ReservationViewController {
         List<Machine> machines = serviceMachine.getMachines();
         machineComboBox.setItems(FXCollections.observableArrayList(machines));
 
-        // Display names in dropdown
         machineComboBox.setCellFactory(list -> new ListCell<>() {
             @Override
             protected void updateItem(Machine machine, boolean empty) {
@@ -61,10 +62,15 @@ public class ReservationViewController {
             }
         });
 
-        // Show machine card when selected
-        machineComboBox.setOnAction(e -> showMachineDetails(machineComboBox.getValue()));
+        machineComboBox.setOnAction(e -> {
+            Machine selected = machineComboBox.getValue();
+            showMachineDetails(selected);
+            if (selected != null) {
+                disableReservedDates(selected.getId());
+            }
+        });
 
-        machineCard.setVisible(false); // hidden by default
+        machineCard.setVisible(false);
     }
 
     private void showMachineDetails(Machine machine) {
@@ -86,6 +92,48 @@ public class ReservationViewController {
         machineCard.setVisible(true);
     }
 
+    private void disableReservedDates(int machineId) {
+        List<Reservation> reservations = serviceReservation.getReservationsByMachine(machineId);
+
+        startDatePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(false);
+                for (Reservation res : reservations) {
+                    LocalDate resStart = res.getDateDebut().toLocalDateTime().toLocalDate();
+                    LocalDate resEnd = res.getDateFin().toLocalDateTime().toLocalDate();
+                    if ((date.isEqual(resStart) || date.isEqual(resEnd)) || (date.isAfter(resStart) && date.isBefore(resEnd))) {
+                        setDisable(true);
+                        setStyle("-fx-background-color: #f8d7da;");
+                    }
+                }
+                if (date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                }
+            }
+        });
+
+        endDatePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(false);
+                for (Reservation res : reservations) {
+                    LocalDate resStart = res.getDateDebut().toLocalDateTime().toLocalDate();
+                    LocalDate resEnd = res.getDateFin().toLocalDateTime().toLocalDate();
+                    if ((date.isEqual(resStart) || date.isEqual(resEnd)) || (date.isAfter(resStart) && date.isBefore(resEnd))) {
+                        setDisable(true);
+                        setStyle("-fx-background-color: #f8d7da;");
+                    }
+                }
+                if (date.isBefore(LocalDate.now())) {
+                    setDisable(true);
+                }
+            }
+        });
+    }
+
     @FXML
     private void handleReserve() {
         Machine selectedMachine = machineComboBox.getValue();
@@ -93,6 +141,7 @@ public class ReservationViewController {
         LocalDate end = endDatePicker.getValue();
 
         messageLabel.setText("");
+        messageLabel.setStyle("-fx-text-fill: #c0392b;");
 
         if (selectedMachine == null || start == null || end == null) {
             messageLabel.setText("❌ Veuillez remplir tous les champs.");
@@ -104,20 +153,25 @@ public class ReservationViewController {
             return;
         }
 
-        User user = userService.getUser(2); // static for now
+        User user = Session.getCurrentUser();
         if (user == null) {
-            messageLabel.setText("❌ Utilisateur non trouvé (ID 2).");
+            messageLabel.setText("❌ Utilisateur non trouvé .");
             return;
         }
 
-        Reservation reservation = new Reservation(
-                Timestamp.valueOf(start.atStartOfDay()),
-                Timestamp.valueOf(end.atStartOfDay()),
-                selectedMachine,
-                user
-        );
+        Timestamp startTimestamp = Timestamp.valueOf(start.atStartOfDay());
+        Timestamp endTimestamp = Timestamp.valueOf(end.atStartOfDay());
 
+        boolean available = serviceReservation.isReservationAvailable(selectedMachine.getId(), startTimestamp, endTimestamp);
+
+        if (!available) {
+            messageLabel.setText("❌ Cette machine est déjà réservée pendant cette période.");
+            return;
+        }
+
+        Reservation reservation = new Reservation(startTimestamp, endTimestamp, selectedMachine, user);
         serviceReservation.addReservation(reservation);
+
         messageLabel.setStyle("-fx-text-fill: #27ae60;");
         messageLabel.setText("✅ Réservation enregistrée avec succès !");
         clearForm();
@@ -128,5 +182,19 @@ public class ReservationViewController {
         startDatePicker.setValue(null);
         endDatePicker.setValue(null);
         machineCard.setVisible(false);
+    }
+
+    @FXML
+    private void handleBack(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projectjava/machine-home.fxml"));
+            Scene scene = new Scene(loader.load(),800,600);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("🌾 Accueil des Machines");
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

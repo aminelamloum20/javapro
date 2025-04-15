@@ -1,6 +1,7 @@
 package entities;
 
 import java.sql.Timestamp;
+
 //db table name: machine
 //fields: ids, nom_machine:varchar, type:varchar, etat:varchar, date_dernier_entretien:datetime, prix_location_jour:int, marque:varchar, image:varchar
 public class Machine {

@@ -3,23 +3,45 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="600" prefWidth="800" style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RegisterViewController">
+<VBox alignment="CENTER" prefHeight="600" prefWidth="800"
+      style="-fx-background-color: #FFFBE6;"
+      xmlns="http://javafx.com/javafx/17.0.2-ea"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.RegisterViewController">
 
-    <VBox alignment="CENTER" layoutX="150" layoutY="50" prefWidth="300" spacing="15">
-        <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #333;" text="User Registration" />
+    <VBox alignment="CENTER" layoutX="150" layoutY="50" prefWidth="350" spacing="18"
+          style="-fx-background-color: white;
+                 -fx-padding: 30;
+                 -fx-background-radius: 15;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.2, 0, 4);">
 
-        <TextField fx:id="emailField" promptText="Email" style="-fx-pref-width: 250; -fx-padding: 8;" />
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4A7C59;" text="Créer un compte" />
 
-        <PasswordField fx:id="passwordField" promptText="Password" style="-fx-pref-width: 250; -fx-padding: 8;" />
+        <TextField fx:id="emailField" promptText="Email"
+                   style="-fx-pref-width: 250; -fx-background-radius: 8; -fx-border-color: #B0C4B1; -fx-border-radius: 8;" />
 
-        <ComboBox fx:id="roleComboBox" promptText="Select Role" style="-fx-pref-width: 250;" />
+        <PasswordField fx:id="passwordField" promptText="Mot de passe"
+                       style="-fx-pref-width: 250; -fx-background-radius: 8; -fx-border-color: #B0C4B1; -fx-border-radius: 8;" />
 
-        <Button onAction="#handleRegister" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 250;" text="Register" />
+        <ComboBox fx:id="roleComboBox" promptText="Sélectionner le rôle"
+                  style="-fx-pref-width: 250; -fx-background-radius: 8; -fx-border-color: #B0C4B1; -fx-border-radius: 8;" />
+
+        <Button onAction="#handleRegister"
+                text="S'inscrire"
+                style="-fx-background-color: #7BB661;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;
+                       -fx-background-radius: 8;
+                       -fx-pref-width: 250;" />
 
         <Label fx:id="statusLabel" style="-fx-font-size: 12px;" textFill="red" />
+
         <Label fx:id="loginLabel"
-               text="Login"
+               text="Déjà inscrit ? Connexion"
                onMouseClicked="#handleGoToLogin"
-               style="-fx-text-fill: #2196F3; -fx-underline: true; -fx-cursor: hand;" />
+               style="-fx-text-fill: #4A7C59;
+                      -fx-font-weight: bold;
+                      -fx-underline: true;
+                      -fx-cursor: hand;" />
     </VBox>
 </VBox>

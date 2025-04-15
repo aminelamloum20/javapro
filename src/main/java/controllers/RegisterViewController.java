@@ -67,7 +67,7 @@ public class RegisterViewController implements Initializable {
     private void handleGoToLogin() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projectjava/login-view.fxml"));
-            Scene scene = new Scene(loader.load());
+            Scene scene = new Scene(loader.load(),800,600);
 
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);

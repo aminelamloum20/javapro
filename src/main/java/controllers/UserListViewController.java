@@ -30,11 +30,42 @@ public class UserListViewController {
 
     private final UserService userService = new UserService();
     private final ObservableList<User> masterUserList = FXCollections.observableArrayList();
+    private FilteredList<User> filteredData;
+
     @FXML
     private void handleAddUser() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projectjava/register-view.fxml"));
-            Scene scene = new Scene(loader.load());
+            Scene scene = new Scene(loader.load(),800,600);
+            Stage stage = (Stage) usersTable.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleRollback() {
+        masterUserList.clear();
+        masterUserList.addAll(userService.getAllUsers());
+        searchField.clear();
+        filterRole.setValue("All");
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Rollback");
+        alert.setHeaderText(null);
+        alert.setContentText("✅ La liste des utilisateurs a été restaurée.");
+        alert.getDialogPane().setStyle(
+                "-fx-font-size: 14px; -fx-font-family: 'Segoe UI'; -fx-background-color: #f9f9f9; -fx-border-color: #cccccc;"
+        );
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void handleBack() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projectjava/admin-dashboard-view.fxml"));
+            Scene scene = new Scene(loader.load(),800,600);
             Stage stage = (Stage) usersTable.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -44,18 +75,13 @@ public class UserListViewController {
 
     @FXML
     public void initialize() {
-        // Load data
         masterUserList.addAll(userService.getAllUsers());
-
-        // Setup filtering
-        FilteredList<User> filteredData = new FilteredList<>(masterUserList, p -> true);
+        filteredData = new FilteredList<>(masterUserList, p -> true);
         usersTable.setItems(filteredData);
 
-        // Fill role filter options
         filterRole.getItems().addAll("All", "Admin", "Agriculteur", "Fournisseur", "Client");
         filterRole.setValue("All");
 
-        // 🔎 Filtering logic
         Runnable updateFilter = () -> {
             String emailText = searchField.getText().toLowerCase().trim();
             String selectedRole = filterRole.getValue();
@@ -76,11 +102,9 @@ public class UserListViewController {
             });
         };
 
-        // Listeners for search and role change
         searchField.textProperty().addListener((obs, oldVal, newVal) -> updateFilter.run());
         filterRole.valueProperty().addListener((obs, oldVal, newVal) -> updateFilter.run());
 
-        // Add buttons column
         addEditDeleteButtons();
     }
 
@@ -98,7 +122,7 @@ public class UserListViewController {
                 editButton.setOnAction(e -> {
                     User user = getTableView().getItems().get(getIndex());
                     System.out.println("Edit clicked for: " + user.getEmail());
-                    // TODO: Open edit window
+                    // TODO: ouvrir l'interface de modification
                 });
 
                 deleteButton.setOnAction(e -> {
@@ -109,7 +133,7 @@ public class UserListViewController {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("User Deleted");
                     alert.setHeaderText(null);
-                    alert.setContentText("✅ User \"" + user.getEmail() + "\" was deleted successfully.");
+                    alert.setContentText("✅ User \"" + user.getEmail() + "\" supprimé avec succès.");
                     alert.getDialogPane().setStyle(
                             "-fx-font-size: 14px; -fx-font-family: 'Segoe UI'; -fx-background-color: #f9f9f9; -fx-border-color: #cccccc;"
                     );

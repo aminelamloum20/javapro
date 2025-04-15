@@ -12,7 +12,7 @@ import java.util.List;
 public class ServiceReservation {
     private final Connection conn;
     private final ServiceMachine serviceMachine = new ServiceMachine();
-    private final UserService serviceUser = new UserService(); // you need to have this implemented
+    private final UserService serviceUser = new UserService();
 
     public ServiceReservation() {
         this.conn = DbConnection.getInstance().getConn();
@@ -100,7 +100,6 @@ public class ServiceReservation {
                 Machine machine = serviceMachine.getMachine(machineId);
                 User client = serviceUser.getUser(clientId);
 
-                // Defensive null-check: skip invalid foreign keys
                 if (machine == null || client == null) {
                     System.err.println("⚠️ Skipping reservation ID " + id +
                             " (invalid machine_id: " + machineId + ", client_id: " + clientId + ")");
@@ -115,5 +114,63 @@ public class ServiceReservation {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public List<Reservation> getReservationsByMachine(int machineId) {
+        List<Reservation> list = new ArrayList<>();
+        String sql = "SELECT * FROM reservation WHERE machine_id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, machineId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                Timestamp dateDebut = rs.getTimestamp("date_debut");
+                Timestamp dateFin = rs.getTimestamp("date_fin");
+                int clientId = rs.getInt("client_id");
+
+                Machine machine = serviceMachine.getMachine(machineId);
+                User client = serviceUser.getUser(clientId);
+
+                if (machine == null || client == null) continue;
+
+                Reservation r = new Reservation(id, dateDebut, dateFin, machine, client);
+                list.add(r);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("❌ Error fetching reservations by machine:");
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public boolean isReservationAvailable(int machineId, Timestamp start, Timestamp end) {
+        String sql = "SELECT COUNT(*) FROM reservation " +
+                "WHERE machine_id = ? AND " +
+                "((date_debut <= ? AND date_fin >= ?) OR " +
+                " (date_debut <= ? AND date_fin >= ?) OR " +
+                " (date_debut >= ? AND date_fin <= ?))";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, machineId);
+            stmt.setTimestamp(2, start);
+            stmt.setTimestamp(3, start);
+            stmt.setTimestamp(4, end);
+            stmt.setTimestamp(5, end);
+            stmt.setTimestamp(6, start);
+            stmt.setTimestamp(7, end);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) == 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
