@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import services.UserService;
+import utils.PasswordUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -53,8 +54,11 @@ public class RegisterViewController implements Initializable {
             statusLabel.setText("❌ Email already registered. Please use a different email.");
             return;
         }
-
         User newUser = new User(email, password, role, null);
+
+        String hashedPassword = PasswordUtils.hashPassword(newUser.getPassword());
+        newUser.setPassword(hashedPassword);
+
         if (userService.addUser(newUser)) {
             statusLabel.setText("✅ Registration successful!");
             clearFields();

@@ -16,12 +16,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import services.ServiceMachine;
 import services.ServiceReservation;
-import services.Session;
 import services.UserService;
 
 import java.io.File;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class ReservationViewController {
@@ -29,6 +30,10 @@ public class ReservationViewController {
     @FXML private ComboBox<Machine> machineComboBox;
     @FXML private DatePicker startDatePicker;
     @FXML private DatePicker endDatePicker;
+    @FXML private Spinner<Integer> startHourSpinner;
+    @FXML private Spinner<Integer> startMinuteSpinner;
+    @FXML private Spinner<Integer> endHourSpinner;
+    @FXML private Spinner<Integer> endMinuteSpinner;
     @FXML private Label messageLabel;
 
     @FXML private VBox machineCard;
@@ -69,6 +74,11 @@ public class ReservationViewController {
                 disableReservedDates(selected.getId());
             }
         });
+
+        startHourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 8));
+        startMinuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
+        endHourSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 17));
+        endMinuteSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
 
         machineCard.setVisible(false);
     }
@@ -153,14 +163,17 @@ public class ReservationViewController {
             return;
         }
 
-        User user = Session.getCurrentUser();
+        User user = userService.getUser(34);
         if (user == null) {
-            messageLabel.setText("❌ Utilisateur non trouvé .");
+            messageLabel.setText("❌ Utilisateur non trouvé (ID 2).");
             return;
         }
 
-        Timestamp startTimestamp = Timestamp.valueOf(start.atStartOfDay());
-        Timestamp endTimestamp = Timestamp.valueOf(end.atStartOfDay());
+        LocalDateTime startDateTime = LocalDateTime.of(start, LocalTime.of(startHourSpinner.getValue(), startMinuteSpinner.getValue()));
+        LocalDateTime endDateTime = LocalDateTime.of(end, LocalTime.of(endHourSpinner.getValue(), endMinuteSpinner.getValue()));
+
+        Timestamp startTimestamp = Timestamp.valueOf(startDateTime);
+        Timestamp endTimestamp = Timestamp.valueOf(endDateTime);
 
         boolean available = serviceReservation.isReservationAvailable(selectedMachine.getId(), startTimestamp, endTimestamp);
 
@@ -188,7 +201,7 @@ public class ReservationViewController {
     private void handleBack(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projectjava/machine-home.fxml"));
-            Scene scene = new Scene(loader.load(),800,600);
+            Scene scene = new Scene(loader.load());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle("🌾 Accueil des Machines");

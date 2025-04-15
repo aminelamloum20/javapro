@@ -35,5 +35,9 @@
                 onAction="#handleReservation"
                 style="-fx-background-color: #f39c12; -fx-text-fill: white;
                        -fx-font-size: 15px; -fx-padding: 10 30; -fx-background-radius: 8;" />
+
+        <Button onAction="#handleLogout" text="🔓 Logout"
+                style="-fx-font-size: 14px; -fx-background-color: #e74c3c; -fx-text-fill: white;" />
+
     </VBox>
 </AnchorPane>

@@ -13,12 +13,14 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import services.ServiceMachine;
+import services.Session;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class MachineEditController {
 
@@ -158,8 +160,16 @@ public class MachineEditController {
 
     @FXML
     private void handleBack(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projectjava/machine-home.fxml"));
-        Scene scene = new Scene(loader.load());
+        String fxml = "";
+        if(Objects.equals(Session.getCurrentUser().getRole(), "Admin")){
+            fxml = "/com/example/projectjava/admin-dashboard-view.fxml";
+
+        }else{
+            fxml = "/com/example/projectjava/machine-home.fxml";
+
+        }
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+        Scene scene = new Scene(loader.load(), 800, 600);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("🌾 Gestion des Machines");

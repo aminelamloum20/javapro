@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import services.Session;
 import services.UserService;
+import utils.PasswordUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,9 +39,11 @@ public class LoginViewController {
             return;
         }
 
+        String hashedInput = PasswordUtils.hashPassword(password);
+
         List<User> users = userService.getAllUsers();
         for (User user : users) {
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+            if (user.getEmail().equals(email) && user.getPassword().equals(hashedInput)) {
                 Session.setCurrentUser(user);
                 statusLabel.setText("✅ Login successful!");
                 redirectUser();
@@ -50,6 +53,7 @@ public class LoginViewController {
 
         statusLabel.setText("❌ Invalid email or password.");
     }
+
 
     private void redirectUser() {
         try {

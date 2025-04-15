@@ -3,6 +3,7 @@ package controllers;
 import entities.Machine;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -64,7 +65,23 @@ public class MachineTableViewController {
                 editButton.setOnAction(event -> {
                     Machine machine = getTableView().getItems().get(getIndex());
                     System.out.println("✏️ Modifier: " + machine.getName());
-                    // TODO: Naviguer vers le formulaire de modification
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projectjava/machine-edit.fxml"));
+                        Scene scene = new Scene(loader.load(), 800, 600);
+
+                        // Inject machine data
+                        MachineEditController controller = loader.getController();
+                        controller.setMachine(machine);
+
+                        // Change current scene (not a new window)
+                        Stage currentStage = (Stage) machineTable.getScene().getWindow();
+                        currentStage.setScene(scene);
+                        currentStage.setTitle("✏️ Modifier la Machine");
+                        currentStage.show();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 });
 
                 deleteButton.setOnAction(event -> {
@@ -108,6 +125,18 @@ public class MachineTableViewController {
     private void handleBack() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projectjava/admin-dashboard-view.fxml"));
+            Scene scene = new Scene(loader.load(),800,600);
+            Stage stage = (Stage) machineTable.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void goAdd(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projectjava/machine-add.fxml"));
             Scene scene = new Scene(loader.load(),800,600);
             Stage stage = (Stage) machineTable.getScene().getWindow();
             stage.setScene(scene);

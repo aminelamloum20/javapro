@@ -8,7 +8,7 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.ReservationViewController"
-            prefHeight="520.0" prefWidth="860.0"
+            prefHeight="580.0" prefWidth="880.0"
             style="-fx-background-color: linear-gradient(to bottom, #eef9e6, #d2f0c0);">
 
     <VBox spacing="20" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20">
@@ -23,15 +23,14 @@
                        -fx-background-radius: 8;
                        -fx-font-size: 13px;" />
 
-        <HBox spacing="50" alignment="CENTER"
-              AnchorPane.bottomAnchor="40">
+        <HBox spacing="50" alignment="CENTER" AnchorPane.bottomAnchor="40">
 
             <!-- Formulaire de réservation -->
             <VBox spacing="14" alignment="TOP_CENTER"
                   style="-fx-background-color: #ffffff; -fx-padding: 25;
                          -fx-background-radius: 12;
                          -fx-effect: dropshadow(gaussian, rgba(160,200,110,0.25), 10, 0.1, 0, 4);"
-                  maxWidth="320">
+                  maxWidth="340">
 
                 <Label text="🌾 Réserver une Machine"
                        style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2e5e1a;" />
@@ -40,11 +39,29 @@
                 <ComboBox fx:id="machineComboBox" promptText="Choisir une machine"
                           style="-fx-pref-width: 260; -fx-background-radius: 6;" />
 
+                <!-- Date de début -->
                 <Label text="📅 Date de début :" style="-fx-font-weight: bold; -fx-text-fill: #4b6d2c;" />
                 <DatePicker fx:id="startDatePicker" style="-fx-pref-width: 260; -fx-background-radius: 6;" />
 
+                <!-- Heure de début -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="🕒 Heure de début :" style="-fx-text-fill: #4b6d2c;" />
+                    <Spinner fx:id="startHourSpinner" prefWidth="60" />
+                    <Label text=":" />
+                    <Spinner fx:id="startMinuteSpinner" prefWidth="60" />
+                </HBox>
+
+                <!-- Date de fin -->
                 <Label text="📆 Date de fin :" style="-fx-font-weight: bold; -fx-text-fill: #4b6d2c;" />
                 <DatePicker fx:id="endDatePicker" style="-fx-pref-width: 260; -fx-background-radius: 6;" />
+
+                <!-- Heure de fin -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="🕒 Heure de fin :" style="-fx-text-fill: #4b6d2c;" />
+                    <Spinner fx:id="endHourSpinner" prefWidth="60" />
+                    <Label text=":" />
+                    <Spinner fx:id="endMinuteSpinner" prefWidth="60" />
+                </HBox>
 
                 <Button text="🌱 Réserver" fx:id="reserveButton" onAction="#handleReserve"
                         style="-fx-background-color: #6bbf59; -fx-text-fill: white;
@@ -71,7 +88,6 @@
                 <Label fx:id="machineEtat" style="-fx-text-fill: #6e8e3e;" />
                 <Label fx:id="machinePrix" style="-fx-text-fill: #28a745; -fx-font-weight: bold;" />
             </VBox>
-
         </HBox>
     </VBox>
 </AnchorPane>

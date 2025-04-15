@@ -32,7 +32,7 @@
 
     <Separator orientation="HORIZONTAL" prefWidth="500"/>
 
-    <Button text="🔓 Logout"
+    <Button onAction="#handleLogout" text="🔓 Logout"
             style="-fx-font-size: 14px; -fx-background-color: #e74c3c; -fx-text-fill: white;" />
 
 </VBox>
