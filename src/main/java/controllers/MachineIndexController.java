@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import services.ServiceMachine;
 
@@ -24,16 +25,22 @@ public class MachineIndexController {
     @FXML
     private FlowPane machineContainer;
 
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private ComboBox<String> sortComboBox;
+
     private final ServiceMachine serviceMachine = new ServiceMachine();
 
     @FXML
     public void initialize() {
-        loadMachines();
+        sortComboBox.getItems().addAll("Nom (A-Z)", "Nom (Z-A)", "Prix (Croissant)", "Prix (Décroissant)");
+        displayMachines(serviceMachine.getMachines());
     }
 
-    private void loadMachines() {
+    private void displayMachines(List<Machine> machines) {
         machineContainer.getChildren().clear();
-        List<Machine> machines = serviceMachine.getMachines();
 
         for (Machine machine : machines) {
             VBox card = new VBox(10);
@@ -45,7 +52,6 @@ public class MachineIndexController {
             card.setStyle("-fx-padding: 15; -fx-background-color: white; -fx-background-radius: 10;"
                     + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0.1, 0, 2);");
 
-            // 🖼️ Load image or fallback
             String imagePath;
             File userImage = (machine.getImage_url() != null) ? new File(machine.getImage_url()) : null;
 
@@ -66,7 +72,6 @@ public class MachineIndexController {
             imageView.setFitWidth(180);
             imageView.setPreserveRatio(false);
 
-            // 📄 Labels
             Label nameLabel = new Label(machine.getName());
             nameLabel.setWrapText(true);
             nameLabel.setMaxWidth(180);
@@ -83,7 +88,6 @@ public class MachineIndexController {
             Label priceLabel = new Label(machine.getPricePerDay() + " DT/jour");
             priceLabel.setStyle("-fx-text-fill: #27ae60;");
 
-            // 🧩 Buttons
             Button editBtn = new Button("✏️ Modifier");
             Button deleteBtn = new Button("🗑️ Supprimer");
 
@@ -103,16 +107,38 @@ public class MachineIndexController {
         }
     }
 
+    @FXML
+    private void handleSearchAndSort() {
+        String keyword = searchField.getText().toLowerCase().trim();
+        String sortOption = sortComboBox.getValue();
+
+        List<Machine> machines = serviceMachine.getMachines();
+
+        if (!keyword.isEmpty()) {
+            machines.removeIf(m -> !m.getName().toLowerCase().contains(keyword)
+                    && !m.getType().toLowerCase().contains(keyword));
+        }
+
+        if (sortOption != null) {
+            switch (sortOption) {
+                case "Nom (A-Z)" -> machines.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+                case "Nom (Z-A)" -> machines.sort((a, b) -> b.getName().compareToIgnoreCase(a.getName()));
+                case "Prix (Croissant)" -> machines.sort((a, b) -> Double.compare(a.getPricePerDay(), b.getPricePerDay()));
+                case "Prix (Décroissant)" -> machines.sort((a, b) -> Double.compare(b.getPricePerDay(), a.getPricePerDay()));
+            }
+        }
+
+        displayMachines(machines);
+    }
+
     private void handleEdit(Machine machine) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pijihene/machine-edit.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
 
-            // Inject machine data
             MachineEditController controller = loader.getController();
             controller.setMachine(machine);
 
-            // Change current scene (not a new window)
             Stage currentStage = (Stage) machineContainer.getScene().getWindow();
             currentStage.setScene(scene);
             currentStage.setTitle("✏️ Modifier la Machine");
@@ -131,9 +157,9 @@ public class MachineIndexController {
 
         confirmation.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                serviceMachine.deleteMachine(machine); // we assume it handles all errors internally
+                serviceMachine.deleteMachine(machine);
                 showAlert("Suppression terminée.\n(Elle peut échouer si la machine est liée à des réservations.)");
-                loadMachines(); // refresh the view
+                displayMachines(serviceMachine.getMachines());
             }
         });
     }
@@ -146,7 +172,6 @@ public class MachineIndexController {
         alert.showAndWait();
     }
 
-    // ✅ Nouveau : handleBack()
     @FXML
     private void handleBack(javafx.event.ActionEvent event) {
         try {
