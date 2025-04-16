@@ -10,6 +10,8 @@ public class Reservation {
     private Timestamp dateFin;
     private Machine machine;
     private User client;
+    private String status;
+
 
     public Reservation(int id, Timestamp dateDebut, Timestamp dateFin, Machine machine, User client) {
         this.id = id;
@@ -61,6 +63,7 @@ public class Reservation {
     public User getClient() {
         return client;
     }
+
 
     public void setClient(User client) {
         this.client = client;

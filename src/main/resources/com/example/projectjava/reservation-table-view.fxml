@@ -26,6 +26,7 @@
                 <TableColumn fx:id="machineColumn" text="Machine" prefWidth="180"/>
                 <TableColumn fx:id="startColumn" text="Début" prefWidth="140"/>
                 <TableColumn fx:id="endColumn" text="Fin" prefWidth="140"/>
+                <TableColumn fx:id="actionColumn" text="Action" prefWidth="80"/>
             </columns>
         </TableView>
     </center>

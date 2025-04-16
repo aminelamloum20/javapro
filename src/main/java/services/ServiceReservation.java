@@ -33,14 +33,13 @@ public class ServiceReservation {
         }
     }
 
-    public void deleteReservation(Reservation r) {
+    public void deleteReservation(int id) {
         String sql = "DELETE FROM reservation WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, r.getId());
+            stmt.setInt(1, id);
             stmt.executeUpdate();
-            System.out.println("✅ Reservation deleted.");
+            System.out.println("❌ Reservation supprimée");
         } catch (SQLException e) {
-            System.err.println("❌ Error deleting reservation:");
             e.printStackTrace();
         }
     }

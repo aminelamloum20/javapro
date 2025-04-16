@@ -17,6 +17,11 @@ public class MachineHomeController {
     private void handleAddMachine(ActionEvent event) throws IOException {
         loadPage(event, "/com/example/projectjava/machine-add.fxml");
     }
+    @FXML
+    private void handleForum(ActionEvent event) throws IOException {
+        loadPage(event, "/com/example/projectjava/ListeForum.fxml");
+    }
+
 
     @FXML
     private void handleListMachines(ActionEvent event) throws IOException {
@@ -38,6 +43,10 @@ public class MachineHomeController {
     }
 
     @FXML
+    private void handleAccueil(ActionEvent event) throws IOException {
+        loadPage(event, "/com/example/projectjava/Acceuil.fxml");
+    }
+    @FXML
     private void handleLogout(ActionEvent event){
         Session.clear();
         try {
@@ -49,5 +58,6 @@ public class MachineHomeController {
             e.printStackTrace();
         }
     }
+
 }
 
