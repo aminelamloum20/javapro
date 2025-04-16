@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import services.Session;
 
@@ -46,6 +47,17 @@ public class MachineHomeController {
     private void handleAccueil(ActionEvent event) throws IOException {
         loadPage(event, "/com/example/projectjava/Acceuil.fxml");
     }
+    @FXML
+    private void handleProduits(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projectjava/AfficherProduit.fxml"));
+        AnchorPane root = loader.load();
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
     @FXML
     private void handleLogout(ActionEvent event){
         Session.clear();
