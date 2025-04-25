@@ -33,6 +33,17 @@ public class MachineHomeController {
     private void handleReservation(ActionEvent event) throws IOException {
         loadPage(event, "/com/example/projectjava/reservation-view.fxml");
     }
+    @FXML
+    private void handleCulture(ActionEvent event) throws IOException {
+        loadPage(event, "/com/example/projectjava/AfficherCulture.fxml");
+    }
+
+    @FXML
+    private void handleParcelle(ActionEvent event) throws IOException {
+        loadPage(event, "/com/example/projectjava/AfficherParcelle.fxml");
+    }
+
+
 
     private void loadPage(ActionEvent event, String fxmlPath) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

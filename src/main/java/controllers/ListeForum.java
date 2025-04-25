@@ -180,5 +180,25 @@ public class ListeForum implements Initializable {
 
         return card;
     }
+    @FXML
+    private void handleRetour(ActionEvent event) {
+        try {
+            // Fermer la fenêtre actuelle
+            Stage currentStage = (Stage) createForumButton.getScene().getWindow();
+            currentStage.close();
+
+            // Charger la scène de machine-home.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projectjava/machine-home.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Accueil");
+
+            stage.setScene(new Scene(loader.load()));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors du retour à l'accueil : " + e.getMessage());
+        }
+    }
 
 }

@@ -16,7 +16,7 @@
 
             <!-- Bouton pour créer un forum -->
             <Button fx:id="createForumButton" text="Créer un Forum" onAction="#handleCreateForum"/>
-
+            <Button text="Retour" onAction="#handleRetour"/>
         </VBox>
     </content>
 </ScrollPane>

@@ -47,6 +47,17 @@
                 onAction="#handleProduits"
                 style="-fx-background-color: #16a085; -fx-text-fill: white;
                -fx-font-size: 15px; -fx-padding: 10 30; -fx-background-radius: 8;" />
+        <!-- ✅ Nouveau bouton Culture -->
+        <Button text="🌾 Culture"
+                onAction="#handleCulture"
+                style="-fx-background-color: #1abc9c; -fx-text-fill: white;
+                       -fx-font-size: 15px; -fx-padding: 10 30; -fx-background-radius: 8;" />
+
+        <!-- ✅ Nouveau bouton Parcelle -->
+        <Button text="🗺️ Parcelle"
+                onAction="#handleParcelle"
+                style="-fx-background-color: #34495e; -fx-text-fill: white;
+                       -fx-font-size: 15px; -fx-padding: 10 30; -fx-background-radius: 8;" />
 
 
 
