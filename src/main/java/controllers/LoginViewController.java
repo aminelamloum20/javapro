@@ -92,4 +92,4 @@ public class LoginViewController {
             statusLabel.setText("❌ Failed to load register page.");
         }
     }
-}
+    }
